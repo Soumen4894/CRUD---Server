@@ -18,13 +18,21 @@ app.use('/api/v1/items', itemRoutes);
 const startServer = async () => {
   try {
     // Start an in-memory MongoDB instance
-    const mongoServer = await MongoMemoryServer.create();
-    const mongoUri = mongoServer.getUri();
+    // const mongoServer = await MongoMemoryServer.create();
+    // const mongoUri = mongoServer.getUri();
 
-    // Connect Mongoose to the in-memory database
+    // // Connect Mongoose to the in-memory database
+    // await mongoose.connect(mongoUri, {
+    //   useNewUrlParser: true,
+    //   useUnifiedTopology: true,
+    // }); 
+    const mongod = new MongoMemoryServer();
+    await mongod.start();
+    const mongoUri = mongod.getUri();
+    
     await mongoose.connect(mongoUri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
     });
 
     console.log('In-memory MongoDB connected successfully');
@@ -37,4 +45,4 @@ const startServer = async () => {
   }
 };
 
-startServer();
+// startServer();
